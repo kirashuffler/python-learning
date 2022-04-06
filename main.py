@@ -28,6 +28,8 @@ def fetch_html_data(url: str) -> str:
         return 'none'
     connection = HTTPSConnection(parsed_url.hostname)
     connection.request("GET", parsed_url.path)
+    global number_of_requests
+    number_of_requests += 1
     connection_response = connection.getresponse()
     if connection_response.status != 200:
         return 'none'
@@ -64,9 +66,10 @@ def count_word_on_page_and_subpages(url: str, word: str, visited_links=set()) ->
 
 def main():
     main_url = 'https://docs.python.org/3/library/urllib.parse.html'
-    n = count_word_on_page_and_subpages(main_url, 'optional')
-    print(n)
-    print("Number of request: ", number_of_requests)
+    word = 'optional'
+    n = count_word_on_page_and_subpages(main_url, word)
+    print(f'Number of "{word}" word occurences: {n}')
+    print(f'Number of request: {number_of_requests}')
 
 
 if __name__ == '__main__':
